@@ -189,7 +189,6 @@ def harvest_sun(minimum):
 		measures = []
 		x = get_world_size()**2
 		while len(measures) != x:
-			quick_print(measures)
 			for n in range(get_world_size()):
 				if get_ground_type() == Grounds.Grassland or get_entity_type() != Entities.Sunflower:
 					if get_ground_type() == Grounds.Grassland:
@@ -205,7 +204,6 @@ def harvest_sun(minimum):
 						move(North)
 			move(East)
 		while len(measures) > 0:
-			quick_print(measures)
 			for n in range(get_world_size()):
 				if get_entity_type() == Entities.Sunflower:
 					v = measure()
@@ -281,17 +279,17 @@ def harvest_g(minimum):
 			start = get_tick_count()
 			x=1
 			directions = [North, East, South, West]
-			for i in range(6):
+			for i in range(10):
 				while get_entity_type() != Entities.Treasure:
 					current = get_tick_count()
 					ab = current - start
-					if ab >= 200000:
+					if ab >= 400000:
 						break
 					for y in range(37):
 						if get_entity_type() == Entities.Treasure:
 							i+=1
 							if i == 6:
-								harvest()
+								i+=1
 								plant(Entities.Bush)
 								while not can_harvest():
 									pass
@@ -313,7 +311,8 @@ def harvest_g(minimum):
 				use_item(Items.Weird_Substance, 10)
 			harvest()
 			i=0
-			
+
+fertilizer = 0	
 while True:
 	farmed_each_time = 4000
 	unlock(Unlocks.Pumpkins)
@@ -331,11 +330,12 @@ while True:
 		2: num_items(Items.Carrot),
 		3: num_items(Items.Pumpkin),
 		4: num_items(Items.Power),
-		5: num_items(Items.Weird_Substance),
+		5: fertilizer,
 		6: num_items(Items.Cactus),
 		7: num_items(Items.Bone),
 		8: num_items(Items.Gold),
 		}
+	quick_print(items)
 	for k in items:
 		values.append(items[k])
 	minimum = min(values)
@@ -352,7 +352,13 @@ while True:
 			elif i ==4:
 				harvest_sun(minimum)
 			elif i ==5:
-				harvest_sub(minimum)
+					fer = num_items(Items.Fertilizer)
+					if fer <= 4000:
+						fertilizer=items[8] + 2000
+						quick_print(items[5])
+					else:
+						fertilizer = num_items(Items.Weird_Substance)
+						harvest_sub(minimum)
 			elif i ==6:
 				harvest_cac(minimum)
 			elif i ==7:		
